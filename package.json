@@ -15,8 +15,7 @@
     "upgrade-astro": "upgrade && ncu",
     "upgrade-bun": "bun upgrade",
     "barra-off": "astro preferences disable devToolbar",
-    "barra-on": "astro preferences enable devToolbar",
-    "dev:server": "json-server --watch db.json"
+    "barra-on": "astro preferences enable devToolbar"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.3",
