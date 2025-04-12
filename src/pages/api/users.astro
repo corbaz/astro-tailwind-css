@@ -1,0 +1,170 @@
+---
+import { readFile, writeFile } from "node:fs/promises";
+
+// Interfaces para el tipado estricto
+interface User {
+    id: number;
+    name: string;
+    [key: string]: any; // Para campos adicionales
+}
+
+interface Database {
+    users: User[];
+    [key: string]: any; // Para otras colecciones
+}
+
+const dbPath = "./src/databases/db.json";
+
+// Funciones auxiliares con tipos correctos
+async function readDatabase(): Promise<Database> {
+    try {
+        const data = await readFile(dbPath, "utf-8");
+        return JSON.parse(data) as Database;
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
+        throw new Error(`Error reading database: ${errorMessage}`);
+    }
+}
+
+async function writeDatabase(db: Database): Promise<void> {
+    try {
+        await writeFile(dbPath, JSON.stringify(db, null, 2));
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
+        throw new Error(`Error writing to database: ${errorMessage}`);
+    }
+}
+
+function createResponse<T>(data: T | null, status = 200): Response {
+    return new Response(data !== null ? JSON.stringify(data) : null, {
+        status,
+        headers:
+            data !== null
+                ? {
+                      "Content-Type": "application/json",
+                  }
+                : undefined,
+    });
+}
+
+function createErrorResponse(message: string, status = 500): Response {
+    console.error(message);
+    return createResponse({ message }, status);
+}
+
+// Tipos para los parámetros de las funciones API
+type APIContext = {
+    request: Request;
+    params: Record<string, string>;
+};
+
+// Operaciones CRUD
+export async function GET(): Promise<Response> {
+    try {
+        const db = await readDatabase();
+        return createResponse(db);
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
+        return createErrorResponse(errorMessage, 500);
+    }
+}
+
+export async function POST({
+    request,
+}: {
+    request: Request;
+}): Promise<Response> {
+    try {
+        const body = (await request.json()) as Partial<User>;
+
+        // Validación básica
+        if (!body.name) {
+            return createErrorResponse("Name is required", 400);
+        }
+
+        const db = await readDatabase();
+        const newUser: User = {
+            id: Date.now(),
+            name: body.name,
+            ...body,
+        };
+
+        db.users.push(newUser);
+        await writeDatabase(db);
+
+        return createResponse(newUser, 201);
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
+        return createErrorResponse(errorMessage, 500);
+    }
+}
+
+export async function PUT({ request, params }: APIContext): Promise<Response> {
+    try {
+        const { id } = params;
+        if (!id) {
+            return createErrorResponse("User ID is required", 400);
+        }
+
+        const body = (await request.json()) as Partial<User>;
+        const db = await readDatabase();
+
+        const userIndex = db.users.findIndex(
+            (user: User) => user.id === parseInt(id)
+        );
+
+        if (userIndex === -1) {
+            return createErrorResponse("User not found", 404);
+        }
+
+        // Preservamos el ID original
+        db.users[userIndex] = {
+            ...db.users[userIndex],
+            ...body,
+            id: db.users[userIndex].id,
+        };
+
+        await writeDatabase(db);
+
+        return createResponse(db.users[userIndex]);
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
+        return createErrorResponse(errorMessage, 500);
+    }
+}
+
+export async function DELETE({
+    params,
+}: {
+    params: Record<string, string>;
+}): Promise<Response> {
+    try {
+        const { id } = params;
+        if (!id) {
+            return createErrorResponse("User ID is required", 400);
+        }
+
+        const db = await readDatabase();
+        const numericId = parseInt(id);
+
+        const userExists = db.users.some((user: User) => user.id === numericId);
+        if (!userExists) {
+            return createErrorResponse("User not found", 404);
+        }
+
+        db.users = db.users.filter((user: User) => user.id !== numericId);
+        await writeDatabase(db);
+
+        return createResponse(null, 204);
+    } catch (error: unknown) {
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
+        return createErrorResponse(errorMessage, 500);
+    }
+}
+---

@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 
-const Navbar = () => {
+interface NavbarProps {
+  // Define any props here, if needed
+}
+
+const Navbar: React.FC<NavbarProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
+    console.log('toggleMenu called');
     setIsOpen(!isOpen);
   };
 

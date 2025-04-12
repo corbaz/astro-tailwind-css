@@ -1,0 +1,26 @@
+{
+    "users": [
+        {
+            "id": 0,
+            "nombre": "John Doe",
+            "edad": 30,
+            "email": "johndoe@example.com",
+            "sexo": "masculino"
+        },
+        {
+            "id": 1,
+            "nombre": "Jane Smith",
+            "edad": 25,
+            "email": "janesmith@example.com",
+            "sexo": "femenino"
+        },
+
+        {
+            "id": 2,
+            "nombre": "Alice Johnson",
+            "edad": 28,
+            "email": "alicejohnson@example.com",
+            "sexo": "femenino"
+        }
+    ]
+}

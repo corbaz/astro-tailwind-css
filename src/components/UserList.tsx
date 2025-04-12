@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-const UserList = () => {
-  const [users, setUsers] = useState([]);
+interface User {
+  id: number;
+  name: string;
+}
+
+interface UserListProps {
+  // Define any props here, if needed
+}
+
+const UserList: React.FC<UserListProps> = () => {
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     fetch('http://localhost:3000/users')
