@@ -3,17 +3,35 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "db": "bun json-server -w ./src/databases/db.json --port 3001",
+    "dev": "astro dev --host",
+    "start": "astro dev --host",
+    "build": "astro check && astro build",
+    "publish": "surge --domain astro-react.surge.sh",
+    "preview": "astro preview --host",
+    "astro": "astro",
+    "bun-install": "bun install",
+    "upgrade-install": "bun install @astrojs/upgrade",
+    "upgrade-astro": "upgrade && ncu",
+    "upgrade-bun": "bun upgrade",
+    "barra-off": "astro preferences disable devToolbar",
+    "barra-on": "astro preferences enable devToolbar",
+    "dev:server": "json-server --watch db.json"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.3",
+    "@astrojs/react": "^4.2.3",
     "@tailwindcss/vite": "^4.0.17",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.2",
     "astro": "^5.6.1",
     "canvas-confetti": "^1.9.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "tailwindcss": "^4.0.17"
+  },
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.3"
   }
 }
