@@ -1,32 +1,18 @@
 {
   "users": [
     {
-      "id": 1681234567890,
-      "nombre": "Juan Pérez",
-      "edad": 51,
-      "email": "juan@ejemplo.com",
-      "sexo": "masculino"
-    },
-    {
-      "id": 1681234567891,
-      "nombre": "María López",
-      "edad": 34,
-      "email": "maria@ejemplo.com",
-      "sexo": "masculino"
-    },
-    {
-      "id": 1744727554629,
-      "nombre": "Alejandra Guille",
-      "edad": 58,
-      "email": "julio.corbaz@gmail.com",
-      "sexo": "otro"
-    },
-    {
-      "id": 1744752190670,
+      "id": 1744759087677,
       "nombre": "María García",
-      "edad": 26,
+      "edad": 57,
+      "email": "",
+      "sexo": ""
+    },
+    {
+      "id": 1744759492262,
+      "nombre": "Julio César",
+      "edad": 14,
       "email": "julio.corbaz@gmail.com",
-      "sexo": "masculino"
+      "sexo": ""
     }
   ]
 }
