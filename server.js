@@ -4,7 +4,7 @@
 import { handler } from "./dist/server/entry.mjs";
 import http from "http";
 
-const PORT = process.env.PORT || 4321;
+const PORT = process.env.PORT;
 
 // Creamos un servidor HTTP que usa el handler de Astro
 http.createServer(handler).listen(PORT, () => {
