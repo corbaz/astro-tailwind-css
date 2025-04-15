@@ -174,12 +174,14 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
             setSexo(updatedUser.sexo || "");
 
             // Usar una redirección compatible con Astro
-            console.log("Redireccionando a la página principal...");
+            console.log(
+                "Redireccionando a la página de gestión de usuarios..."
+            );
 
             // Mostrar mensaje por un breve momento antes de redireccionar
             setTimeout(() => {
                 // Usamos esta forma de redirección que es compatible con SSR de Astro
-                document.location.href = "/";
+                document.location.href = "/create";
             }, 800);
         } catch (err) {
             const errorMsg =
@@ -205,8 +207,8 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
                         {debug}
                     </pre>
                 )}
-                <a href="/" className="text-blue-500 hover:underline">
-                    Volver a la lista de usuarios
+                <a href="/create" className="text-blue-500 hover:underline">
+                    Volver a la gestión de usuarios
                 </a>
             </div>
         );
@@ -221,8 +223,8 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
                         {debug}
                     </pre>
                 )}
-                <a href="/" className="text-blue-500 hover:underline">
-                    Volver a la lista de usuarios
+                <a href="/create" className="text-blue-500 hover:underline">
+                    Volver a la gestión de usuarios
                 </a>
             </div>
         );
@@ -325,7 +327,7 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
                         {saving ? "Guardando..." : "Guardar Cambios"}
                     </button>
                     <a
-                        href="/"
+                        href="/create"
                         className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
                         Cancelar

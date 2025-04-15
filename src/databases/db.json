@@ -19,14 +19,14 @@
       "nombre": "Alejandra Guille",
       "edad": 18,
       "email": "julio.corbaz@gmail.com",
-      "sexo": ""
+      "sexo": "femenino"
     },
     {
       "id": 1744752190670,
       "nombre": "María García",
-      "edad": 20,
+      "edad": 26,
       "email": "julio.corbaz@gmail.com",
-      "sexo": "femenino"
+      "sexo": "masculino"
     }
   ]
 }
