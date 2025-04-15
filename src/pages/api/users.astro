@@ -1,170 +1,167 @@
 ---
+// Asegurar que esta página se renderice en el servidor
+export const prerender = false;
+
 import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import fs from "node:fs";
 
 // Interfaces para el tipado estricto
 interface User {
     id: number;
-    name: string;
-    [key: string]: any; // Para campos adicionales
+    nombre: string;
+    edad: number | string;
+    email: string;
+    sexo: string;
 }
 
 interface Database {
     users: User[];
-    [key: string]: any; // Para otras colecciones
 }
 
-const dbPath = "./src/databases/db.json";
+// Usar una ruta absoluta segura
+const dbPath = path.join(process.cwd(), "src", "databases", "db.json");
 
-// Funciones auxiliares con tipos correctos
+// Asegurarnos que el directorio existe
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+}
+
+// Asegurarnos que el archivo de base de datos existe
+if (!fs.existsSync(dbPath)) {
+    fs.writeFileSync(dbPath, JSON.stringify({ users: [] }, null, 2));
+}
+
+// Funciones para manejar la base de datos
 async function readDatabase(): Promise<Database> {
     try {
         const data = await readFile(dbPath, "utf-8");
         return JSON.parse(data) as Database;
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : String(error);
-        throw new Error(`Error reading database: ${errorMessage}`);
+    } catch (error) {
+        console.error("Error al leer la base de datos:", error);
+        // En caso de error, devolver una base de datos vacía
+        return { users: [] };
     }
 }
 
 async function writeDatabase(db: Database): Promise<void> {
+    await writeFile(dbPath, JSON.stringify(db, null, 2));
+}
+
+// Manejar los métodos HTTP
+if (Astro.request.method === "GET") {
     try {
-        await writeFile(dbPath, JSON.stringify(db, null, 2));
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : String(error);
-        throw new Error(`Error writing to database: ${errorMessage}`);
+        const database = await readDatabase();
+        return new Response(JSON.stringify(database.users), {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+    } catch (error) {
+        console.error("Error obteniendo usuarios:", error);
+        return new Response(
+            JSON.stringify({ error: "Error al obtener usuarios" }),
+            {
+                status: 500,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
     }
-}
-
-function createResponse<T>(data: T | null, status = 200): Response {
-    return new Response(data !== null ? JSON.stringify(data) : null, {
-        status,
-        headers:
-            data !== null
-                ? {
-                      "Content-Type": "application/json",
-                  }
-                : undefined,
-    });
-}
-
-function createErrorResponse(message: string, status = 500): Response {
-    console.error(message);
-    return createResponse({ message }, status);
-}
-
-// Tipos para los parámetros de las funciones API
-type APIContext = {
-    request: Request;
-    params: Record<string, string>;
-};
-
-// Operaciones CRUD
-export async function GET(): Promise<Response> {
+} else if (Astro.request.method === "POST") {
     try {
-        const db = await readDatabase();
-        return createResponse(db);
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : String(error);
-        return createErrorResponse(errorMessage, 500);
-    }
-}
+        // Verificar primero que hay contenido en el cuerpo de la petición
+        const contentType = Astro.request.headers.get("Content-Type");
+        if (!contentType || !contentType.includes("application/json")) {
+            return new Response(
+                JSON.stringify({ error: "El contenido debe ser JSON" }),
+                {
+                    status: 400,
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+        }
 
-export async function POST({
-    request,
-}: {
-    request: Request;
-}): Promise<Response> {
-    try {
-        const body = (await request.json()) as Partial<User>;
+        // Obtener el texto antes de intentar parsearlo
+        const text = await Astro.request.text();
+
+        if (!text || text.trim() === "") {
+            return new Response(
+                JSON.stringify({
+                    error: "El cuerpo de la petición está vacío",
+                }),
+                {
+                    status: 400,
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+        }
+
+        // Parsear el JSON con manejo de errores
+        let body;
+        try {
+            body = JSON.parse(text);
+        } catch (e) {
+            return new Response(
+                JSON.stringify({ error: "JSON inválido", details: e.message }),
+                {
+                    status: 400,
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+        }
 
         // Validación básica
-        if (!body.name) {
-            return createErrorResponse("Name is required", 400);
+        if (!body.nombre) {
+            return new Response(
+                JSON.stringify({ error: "Nombre es requerido" }),
+                {
+                    status: 400,
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
         }
 
         const db = await readDatabase();
         const newUser: User = {
             id: Date.now(),
-            name: body.name,
-            ...body,
+            nombre: body.nombre,
+            edad: body.edad || 0,
+            email: body.email || "",
+            sexo: body.sexo || "",
         };
 
         db.users.push(newUser);
         await writeDatabase(db);
 
-        return createResponse(newUser, 201);
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : String(error);
-        return createErrorResponse(errorMessage, 500);
-    }
-}
-
-export async function PUT({ request, params }: APIContext): Promise<Response> {
-    try {
-        const { id } = params;
-        if (!id) {
-            return createErrorResponse("User ID is required", 400);
-        }
-
-        const body = (await request.json()) as Partial<User>;
-        const db = await readDatabase();
-
-        const userIndex = db.users.findIndex(
-            (user: User) => user.id === parseInt(id)
+        return new Response(JSON.stringify(newUser), {
+            status: 201,
+            headers: { "Content-Type": "application/json" },
+        });
+    } catch (error) {
+        console.error("Error creando usuario:", error);
+        return new Response(
+            JSON.stringify({
+                error: "Error al crear usuario",
+                details: error.message,
+            }),
+            {
+                status: 500,
+                headers: { "Content-Type": "application/json" },
+            }
         );
-
-        if (userIndex === -1) {
-            return createErrorResponse("User not found", 404);
-        }
-
-        // Preservamos el ID original
-        db.users[userIndex] = {
-            ...db.users[userIndex],
-            ...body,
-            id: db.users[userIndex].id,
-        };
-
-        await writeDatabase(db);
-
-        return createResponse(db.users[userIndex]);
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : String(error);
-        return createErrorResponse(errorMessage, 500);
     }
-}
-
-export async function DELETE({
-    params,
-}: {
-    params: Record<string, string>;
-}): Promise<Response> {
-    try {
-        const { id } = params;
-        if (!id) {
-            return createErrorResponse("User ID is required", 400);
-        }
-
-        const db = await readDatabase();
-        const numericId = parseInt(id);
-
-        const userExists = db.users.some((user: User) => user.id === numericId);
-        if (!userExists) {
-            return createErrorResponse("User not found", 404);
-        }
-
-        db.users = db.users.filter((user: User) => user.id !== numericId);
-        await writeDatabase(db);
-
-        return createResponse(null, 204);
-    } catch (error: unknown) {
-        const errorMessage =
-            error instanceof Error ? error.message : String(error);
-        return createErrorResponse(errorMessage, 500);
-    }
+} else {
+    // Manejar métodos no soportados
+    return new Response(JSON.stringify({ error: "Método no soportado" }), {
+        status: 405,
+        headers: {
+            "Content-Type": "application/json",
+            Allow: "GET, POST",
+        },
+    });
 }
 ---

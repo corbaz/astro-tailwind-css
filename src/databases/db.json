@@ -1,26 +1,46 @@
 {
-    "users": [
-        {
-            "id": 0,
-            "nombre": "John Doe",
-            "edad": 30,
-            "email": "johndoe@example.com",
-            "sexo": "masculino"
-        },
-        {
-            "id": 1,
-            "nombre": "Jane Smith",
-            "edad": 25,
-            "email": "janesmith@example.com",
-            "sexo": "femenino"
-        },
-
-        {
-            "id": 2,
-            "nombre": "Alice Johnson",
-            "edad": 28,
-            "email": "alicejohnson@example.com",
-            "sexo": "femenino"
-        }
-    ]
+  "users": [
+    {
+      "id": 1681234567890,
+      "nombre": "Juan Pérez",
+      "edad": 51,
+      "email": "juan@ejemplo.com",
+      "sexo": "masculino"
+    },
+    {
+      "id": 1681234567891,
+      "nombre": "María López",
+      "edad": 55,
+      "email": "maria@ejemplo.com",
+      "sexo": "femenino"
+    },
+    {
+      "id": 1744727534458,
+      "nombre": "Alejandra Guille",
+      "edad": 6,
+      "email": "",
+      "sexo": ""
+    },
+    {
+      "id": 1744727554629,
+      "nombre": "Alejandra Guille",
+      "edad": 18,
+      "email": "julio.corbaz@gmail.com",
+      "sexo": ""
+    },
+    {
+      "id": 1744727909737,
+      "nombre": "Alejandra Guille",
+      "edad": 27,
+      "email": "",
+      "sexo": ""
+    },
+    {
+      "id": 1744727980261,
+      "nombre": "Julio",
+      "edad": 0,
+      "email": "",
+      "sexo": ""
+    }
+  ]
 }
