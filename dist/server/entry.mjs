@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_D6Yp96uf.mjs';
-import { manifest } from './manifest_Bypz3q_y.mjs';
+import { manifest } from './manifest_BmHkRPxj.mjs';
 
 const serverIslandMap = new Map();;
 
@@ -35,7 +35,6 @@ const _args = {
     "client": "file:///C:/www/astro-tailwind-css/dist/client/",
     "server": "file:///C:/www/astro-tailwind-css/dist/server/",
     "host": false,
-    "port": 4321,
     "assets": "_astro"
 };
 const _exports = createExports(_manifest, _args);
