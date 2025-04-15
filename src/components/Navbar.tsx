@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { VERSION } from "../const/appConstants";
 
 interface NavbarProps {
     // Define any props here, if needed
@@ -41,7 +42,18 @@ const Navbar: React.FC<NavbarProps> = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="-mr-2 flex md:hidden">
+
+                    {/* Versión de la aplicación */}
+                    <div className="hidden md:flex items-center">
+                        <span className="text-gray-400 text-sm font-medium">
+                            v.{VERSION}
+                        </span>
+                    </div>
+
+                    <div className="md:hidden flex items-center">
+                        <span className="text-gray-400 text-sm font-medium mr-3">
+                            v.{VERSION}
+                        </span>
                         <button
                             onClick={toggleMenu}
                             type="button"
