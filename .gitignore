@@ -1,5 +1,7 @@
 # build output
-dist/
+dist/client/
+# pero NO ignores dist/server
+
 # generated types
 .astro/
 

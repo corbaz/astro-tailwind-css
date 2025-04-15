@@ -23,3 +23,17 @@ For complete setup instructions, please see our [Tailwind Integration Guide](htt
 	"endLineNumber": 21,
 	"endColumn": 25
 }]
+
+# 📁 Estructura del Proyecto Astro para Railway
+
+```bash
+/mi-app
+├── src/
+├── dist/
+├── public/
+├── package.json
+├── astro.config.mjs
+├── server.js         ✅ raíz
+├── railway.json      ✅ raíz (opcional)
+
+```
