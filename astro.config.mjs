@@ -16,4 +16,8 @@ export default defineConfig({
     adapter: node({
         mode: "standalone",
     }),
+    server: {
+        host: "0.0.0.0", // Permite que Railway acceda al servidor
+        port: Number(process.env.PORT) || 4321,
+    },
 });
