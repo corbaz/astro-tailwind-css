@@ -1,11 +1,30 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import UserCreate from "../components/UserCreate.tsx";
+import UserList from "../components/UserList.tsx";
 ---
 
-<Layout title="Create User">
+<Layout title="Gestión de Usuarios">
     <main class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Create User</h1>
-        <UserCreate />
+        <h1 class="text-2xl font-bold mb-4">Sistema de Gestión de Usuarios</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Formulario de creación (1/4 del ancho) -->
+            <div class="lg:col-span-1 bg-white shadow-lg rounded-lg p-6">
+                <h2
+                    class="text-xl font-bold mb-6 text-center text-blue-700 py-3 border-b border-gray-200"
+                >
+                    Crear Nuevo Usuario
+                </h2>
+                <div class="max-w-sm mx-auto">
+                    <UserCreate client:load />
+                </div>
+            </div>
+
+            <!-- Listado (3/4 del ancho) -->
+            <div class="lg:col-span-3 bg-white shadow-lg rounded-lg p-6">
+                <UserList client:load />
+            </div>
+        </div>
     </main>
 </Layout>

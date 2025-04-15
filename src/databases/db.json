@@ -15,13 +15,6 @@
       "sexo": "femenino"
     },
     {
-      "id": 1744727534458,
-      "nombre": "Alejandra Guille",
-      "edad": 6,
-      "email": "",
-      "sexo": ""
-    },
-    {
       "id": 1744727554629,
       "nombre": "Alejandra Guille",
       "edad": 18,
@@ -29,18 +22,11 @@
       "sexo": ""
     },
     {
-      "id": 1744727909737,
-      "nombre": "Alejandra Guille",
-      "edad": 27,
-      "email": "",
-      "sexo": ""
-    },
-    {
-      "id": 1744727980261,
-      "nombre": "Julio",
-      "edad": 0,
-      "email": "",
-      "sexo": ""
+      "id": 1744752190670,
+      "nombre": "María García",
+      "edad": 20,
+      "email": "julio.corbaz@gmail.com",
+      "sexo": "femenino"
     }
   ]
 }

@@ -72,24 +72,38 @@ const UserList: React.FC<UserListProps> = () => {
 
     return (
         <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">Listado de Usuarios</h2>
+            <h2 className="text-2xl font-bold mb-4">
+                Listado de Usuarios{" "}
+                <span className="text-red-600">({users.length})</span>
+            </h2>
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border border-gray-300">
                     <thead>
                         <tr>
-                            <th className="py-2 px-4 border-b">ID</th>
+                            <th className="py-2 px-4 border-b">Acciones</th>
                             <th className="py-2 px-4 border-b">Nombre</th>
                             <th className="py-2 px-4 border-b">Edad</th>
                             <th className="py-2 px-4 border-b">Email</th>
                             <th className="py-2 px-4 border-b">Sexo</th>
-                            <th className="py-2 px-4 border-b">Acciones</th>
+                            <th className="py-2 px-4 border-b">ID</th>
                         </tr>
                     </thead>
                     <tbody>
                         {users.map((user) => (
                             <tr key={user.id} className="hover:bg-gray-100">
                                 <td className="py-2 px-4 border-b">
-                                    {user.id}
+                                    <a
+                                        href={`/edit?id=${user.id}`}
+                                        className="text-blue-500 hover:underline mr-2"
+                                    >
+                                        Editar
+                                    </a>
+                                    <a
+                                        href={`/delete?id=${user.id}`}
+                                        className="text-red-500 hover:underline"
+                                    >
+                                        Eliminar
+                                    </a>
                                 </td>
                                 <td className="py-2 px-4 border-b">
                                     {user.nombre}
@@ -104,18 +118,7 @@ const UserList: React.FC<UserListProps> = () => {
                                     {user.sexo}
                                 </td>
                                 <td className="py-2 px-4 border-b">
-                                    <a
-                                        href={`/edit?id=${user.id}`}
-                                        className="text-blue-500 hover:underline mr-2"
-                                    >
-                                        Editar
-                                    </a>
-                                    <a
-                                        href={`/delete?id=${user.id}`}
-                                        className="text-red-500 hover:underline"
-                                    >
-                                        Eliminar
-                                    </a>
+                                    {user.id}
                                 </td>
                             </tr>
                         ))}
