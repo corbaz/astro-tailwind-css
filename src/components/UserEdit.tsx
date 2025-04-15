@@ -22,7 +22,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
-    const [debug, setDebug] = useState(""); // Variable para debugging
 
     // Obtener ID de la URL si no fue proporcionado como prop
     const getUserId = useCallback(() => {
@@ -48,27 +47,17 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
 
         setLoading(true);
         setError("");
-        setDebug(`Intentando cargar usuario con ID: ${id}`);
 
         try {
             // Llamar al endpoint específico del usuario
             const apiUrl = `/api/users/${id}`;
-            setDebug((prev) => `${prev}\nURL de API: ${apiUrl}`);
-
             const response = await fetch(apiUrl);
-            setDebug(
-                (prev) => `${prev}\nEstado de respuesta: ${response.status}`
-            );
 
             if (!response.ok) {
                 throw new Error(`Error al cargar usuario (${response.status})`);
             }
 
             const userData = await response.json();
-            setDebug(
-                (prev) =>
-                    `${prev}\nDatos recibidos: ${JSON.stringify(userData)}`
-            );
 
             if (!userData || typeof userData !== "object") {
                 throw new Error("Datos de usuario no válidos");
@@ -83,7 +72,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
             const errorMsg =
                 err instanceof Error ? err.message : "Error desconocido";
             setError(errorMsg);
-            setDebug((prev) => `${prev}\nError: ${errorMsg}`);
             console.error("Error al cargar usuario:", err);
         } finally {
             setLoading(false);
@@ -112,7 +100,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
         setSaving(true);
         setError("");
         setSuccess("");
-        setDebug(`Intentando actualizar usuario con ID: ${id}`);
 
         try {
             const apiUrl = `/api/users/${id}`;
@@ -123,13 +110,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
                 sexo,
             };
 
-            setDebug(
-                (prev) =>
-                    `${prev}\nURL de API: ${apiUrl}\nDatos enviados: ${JSON.stringify(
-                        userData
-                    )}`
-            );
-
             const response = await fetch(apiUrl, {
                 method: "PUT",
                 headers: {
@@ -138,13 +118,8 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
                 body: JSON.stringify(userData),
             });
 
-            setDebug(
-                (prev) => `${prev}\nEstado de respuesta: ${response.status}`
-            );
-
             if (!response.ok) {
                 const errorText = await response.text();
-                setDebug((prev) => `${prev}\nRespuesta de error: ${errorText}`);
 
                 let errorData;
                 try {
@@ -157,12 +132,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
             }
 
             const updatedUser = await response.json();
-            setDebug(
-                (prev) =>
-                    `${prev}\nUsuario actualizado: ${JSON.stringify(
-                        updatedUser
-                    )}`
-            );
 
             setUser(updatedUser);
             setSuccess("Usuario actualizado correctamente");
@@ -178,7 +147,7 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
                 "Redireccionando a la página de gestión de usuarios..."
             );
 
-            // Mostrar mensaje por un breve momento antes de redireccionar
+            // Mostrar mensaje por un breve momento antes de redirecciónar
             setTimeout(() => {
                 // Usamos esta forma de redirección que es compatible con SSR de Astro
                 document.location.href = "/create";
@@ -187,7 +156,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
             const errorMsg =
                 err instanceof Error ? err.message : "Error desconocido";
             setError(errorMsg);
-            setDebug((prev) => `${prev}\nError en actualización: ${errorMsg}`);
             console.error("Error actualizando usuario:", err);
         } finally {
             setSaving(false);
@@ -202,11 +170,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
         return (
             <div>
                 <p className="text-red-500 py-4">{error}</p>
-                {debug && process.env.NODE_ENV !== "production" && (
-                    <pre className="text-xs bg-gray-100 p-2 mt-2 overflow-auto">
-                        {debug}
-                    </pre>
-                )}
                 <a href="/create" className="text-blue-500 hover:underline">
                     Volver a la gestión de usuarios
                 </a>
@@ -218,11 +181,6 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
         return (
             <div>
                 <p className="text-red-500 py-4">No se encontró el usuario</p>
-                {debug && process.env.NODE_ENV !== "production" && (
-                    <pre className="text-xs bg-gray-100 p-2 mt-2 overflow-auto">
-                        {debug}
-                    </pre>
-                )}
                 <a href="/create" className="text-blue-500 hover:underline">
                     Volver a la gestión de usuarios
                 </a>
@@ -232,15 +190,9 @@ const UserEdit: React.FC<UserEditProps> = ({ userId }) => {
 
     return (
         <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">Editar Usuario</h2>
 
             {error && <p className="text-red-500 mb-4">{error}</p>}
             {success && <p className="text-green-500 mb-4">{success}</p>}
-            {debug && process.env.NODE_ENV !== "production" && (
-                <pre className="text-xs bg-gray-100 p-2 mt-2 mb-4 overflow-auto">
-                    {debug}
-                </pre>
-            )}
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>

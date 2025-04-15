@@ -10,16 +10,16 @@
     {
       "id": 1681234567891,
       "nombre": "María López",
-      "edad": 55,
+      "edad": 34,
       "email": "maria@ejemplo.com",
-      "sexo": "femenino"
+      "sexo": "masculino"
     },
     {
       "id": 1744727554629,
       "nombre": "Alejandra Guille",
       "edad": 58,
       "email": "julio.corbaz@gmail.com",
-      "sexo": "femenino"
+      "sexo": "otro"
     },
     {
       "id": 1744752190670,
