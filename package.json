@@ -8,7 +8,7 @@
         "astro-check": "astro check",
         "clean": "rm -rf dist",
         "dev": "astro dev --host",
-        "start": "node server.js",
+        "start": "node ./dist/server/entry.mjs",
         "build": "bun run clean && astro check && astro build",
         "publish": "surge --domain astro-tailwind-css.surge.sh",
         "preview": "astro preview --host",
