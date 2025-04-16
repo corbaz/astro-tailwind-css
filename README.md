@@ -1,3 +1,13 @@
+# Github Repo: Astro Tailwind CSS
+https://github.com/corbaz/astro-tailwind-css
+
+# Railway Dashboard:
+https://railway.com/dashboard
+
+# Deployments:
+https://astro-tailwind-css-production.up.railway.app/
+
+
 # Astro with Tailwind
 
 ```sh
@@ -10,19 +20,8 @@ pnpm create astro@latest -- --template with-tailwindcss
 
 Astro comes with [Tailwind](https://tailwindcss.com) support out of the box. This example showcases how to style your Astro project with Tailwind.
 
-For complete setup instructions, please see our [Tailwind Integration Guide](https://docs.astro.build/en/guides/integrations-guide/tailwind).
-[{
-	"resource": "/c:/www/astro-tailwind-css/src/pages/api/users.astro",
-	"owner": "_generated_diagnostic_collection_name_#6",
-	"code": "2867",
-	"severity": 8,
-	"message": "No se encuentra el nombre 'Bun'. ¿Necesita instalar definiciones de tipo para Bun? Pruebe `npm i --save-dev @types/bun`.",
-	"source": "ts",
-	"startLineNumber": 21,
-	"startColumn": 22,
-	"endLineNumber": 21,
-	"endColumn": 25
-}]
+For complete setup instructions, please see our [Tailwind Integration Guide](https://docs.astro.build/en/guides/styling/#tailwind).
+
 
 # 📁 Estructura del Proyecto Astro para Railway
 

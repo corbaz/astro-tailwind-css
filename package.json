@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "scripts": {
         "bun-upgrade": "bun upgrade",
-        "astro-upgrade": "upgrade && ncu && bun update",
+        "astro-upgrade": "upgrade && ncu -u && bun update",
         "dev": "astro dev --host",
         "start": "node ./dist/server/entry.mjs",
         "clean": "rm -rf dist",
@@ -29,7 +29,7 @@
         "@types/canvas-confetti": "^1.9.0",
         "@types/react": "^19.1.2",
         "@types/react-dom": "^19.1.2",
-        "astro": "^5.7.0",
+        "astro": "5.7.1",
         "canvas-confetti": "^1.9.3",
         "concurrently": "^9.1.2",
         "json-server": "^1.0.0-beta.3",
