@@ -17,7 +17,11 @@ const UserDelete: React.FC<UserDeleteProps> = ({ userId }) => {
             if (id) {
                 try {
                     await fetch(`/api/users/${id}`, { method: "DELETE" });
-                } catch {}
+                } finally {
+                    if (window.refreshUserList) {
+                        window.refreshUserList();
+                    }
+                }
             }
             window.location.href = "/create";
         };

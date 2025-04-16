@@ -72,9 +72,9 @@ const UserList: React.FC<UserListProps> = () => {
 
     return (
         <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">
+            <h2 className="text-2xl font-bold mb-4 text-blue-400">
                 Listado de Usuarios{" "}
-                <span className="text-red-600">({users.length})</span>
+                <span className="text-blue-400">({users.length})</span>
             </h2>
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border border-gray-300">
